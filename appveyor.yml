@@ -16,24 +16,24 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\multibuild\\ci\\appveyor\\windows_sdk.cmd"
 
   matrix:
-    - PYTHON: "C:\\Miniconda"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda-x64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda3"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda3-x64"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda35"
-      PYTHON_VERSION: "3.5"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda35-x64"
-      PYTHON_VERSION: "3.5"
-      PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda-x64"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda3"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda3-x64"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda35"
+    #   PYTHON_VERSION: "3.5"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda35-x64"
+    #   PYTHON_VERSION: "3.5"
+    #   PYTHON_ARCH: "64"
     - PYTHON: "C:\\Miniconda36"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "32"
@@ -57,15 +57,17 @@ install:
     # Install miniconda
     - ps: .\\multibuild\\ci\\appveyor\\install.ps1
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+    - conda config --add channels conda-forge
     - conda info
+
+build_script:
+    # Install build requirements
+    - conda create --yes -n build_env python=%PYTHON_VERSION% %BUILD_DEPENDS%
+    - activate build_env
 
     # Check that we have the expected version and architecture for Python
     - python --version
     - python -c "import struct; print(struct.calcsize('P') * 8)"
-
-build_script:
-    # Install build requirements
-    - conda install --yes %BUILD_DEPENDS%
 
     # build wheel:
     - cd %REPO_DIR%
