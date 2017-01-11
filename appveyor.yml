@@ -34,12 +34,12 @@ environment:
     - PYTHON: "C:\\Miniconda35-x64"
       PYTHON_VERSION: "3.5"
       PYTHON_ARCH: "64"
-    # - PYTHON: "C:\\Miniconda36"
-    #   PYTHON_VERSION: "3.6"
-    #   PYTHON_ARCH: "32"
-    # - PYTHON: "C:\\Miniconda36-x64"
-    #   PYTHON_VERSION: "3.6"
-    #   PYTHON_ARCH: "64"
+    - PYTHON: "C:\\Miniconda36"
+      PYTHON_VERSION: "3.6"
+      PYTHON_ARCH: "32"
+    - PYTHON: "C:\\Miniconda36-x64"
+      PYTHON_VERSION: "3.6"
+      PYTHON_ARCH: "64"
 
 
 # We always use a 64-bit machine, but can build x86 distributions
@@ -57,15 +57,20 @@ install:
     # Install miniconda
     - ps: .\\multibuild\\ci\\appveyor\\install.ps1
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+    - conda config --add channels conda-forge
     - conda info
+
+
+
+build_script:
+    # create build env  - conda config --add channels conda-forge
+    - conda create --yes -n build_env python=%PYTHON_VERSION% %BUILD_DEPENDS%
+    - activate build_env
+
 
     # Check that we have the expected version and architecture for Python
     - python --version
     - python -c "import struct; print(struct.calcsize('P') * 8)"
-
-build_script:
-    # Install build requirements
-    - conda install --yes %BUILD_DEPENDS%
 
     # build wheel:
     - cd %REPO_DIR%
@@ -80,7 +85,7 @@ test_script:
     # install from wheel
     - pip install --no-index --find-links dist/ %PACKAGE_NAME%
 
-    - "%CMD_IN_ENV% python setup.py test"
+    - "%CMD_IN_ENV% python setup.py test --remote-data=none"
 
 artifacts:
     - path: "%REPO_DIR%\\dist\\*"
