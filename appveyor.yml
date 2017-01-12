@@ -87,10 +87,10 @@ test_script:
 
     #- "%CMD_IN_ENV% python setup.py test --remote-data=none"
     - cd ..
-    - python -c "import astropy; astropy.test()"
+    - python -c "import astropy; astropy.test('io.votable', verbose=True)"
 
 artifacts:
-    - path: "%REPO_DIR%\\dist\\*"
+  - path: "%REPO_DIR%\\dist\\*"
 
 on_success:
   # Upload the generated wheel package to Rackspace
