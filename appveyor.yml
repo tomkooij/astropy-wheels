@@ -87,7 +87,7 @@ test_script:
 
     #- "%CMD_IN_ENV% python setup.py test --remote-data=none"
     - cd ..
-    - python -c "import astropy; astropy.test('io.votable', verbose=True)"
+    - python -c "import astropy; astropy.test(verbose=True)"
 
 artifacts:
   - path: "%REPO_DIR%\\dist\\*"
