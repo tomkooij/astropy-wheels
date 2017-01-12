@@ -34,10 +34,10 @@ environment:
     # - PYTHON: "C:\\Miniconda35-x64"
     #   PYTHON_VERSION: "3.5"
     #   PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda36"
+    - PYTHON: "C:\\Miniconda35"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda36-x64"
+    - PYTHON: "C:\\Miniconda35-x64"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "64"
 
@@ -57,7 +57,7 @@ install:
     # Install miniconda
     - ps: .\\multibuild\\ci\\appveyor\\install.ps1
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
-    - conda config --add channels conda-forge
+    #- conda config --add channels conda-forge
     - conda info
 
 
