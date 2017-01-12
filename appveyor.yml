@@ -16,24 +16,24 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\multibuild\\ci\\appveyor\\windows_sdk.cmd"
 
   matrix:
-    - PYTHON: "C:\\Miniconda"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda-x64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda3"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda3-x64"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda35"
-      PYTHON_VERSION: "3.5"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda35-x64"
-      PYTHON_VERSION: "3.5"
-      PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda-x64"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda3"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda3-x64"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda35"
+    #   PYTHON_VERSION: "3.5"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda35-x64"
+    #   PYTHON_VERSION: "3.5"
+    #   PYTHON_ARCH: "64"
     - PYTHON: "C:\\Miniconda36"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "32"
@@ -47,8 +47,8 @@ environment:
 platform:
     - x64
 
-matrix:
-    fast_finish: true
+#matrix:
+#    fast_finish: true
 
 install:
     # Fetch submodules
@@ -85,7 +85,9 @@ test_script:
     # install from wheel
     - pip install --no-index --find-links dist/ %PACKAGE_NAME%
 
-    - "%CMD_IN_ENV% python setup.py test --remote-data=none"
+    #- "%CMD_IN_ENV% python setup.py test --remote-data=none"
+    - cd ..
+    - python -c "import astropy; astropy.test()"
 
 artifacts:
     - path: "%REPO_DIR%\\dist\\*"
